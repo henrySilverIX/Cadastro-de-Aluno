@@ -1,6 +1,5 @@
 package org.exame.dao;
 
-
 import org.exame.modelo.Aluno;
 import org.exame.factory.ConnectionFactory;
 import java.sql.SQLException;
@@ -26,7 +25,7 @@ public class AlunoDAO {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql);) {
             stmt.setString(1, aluno.getNome());
-            stmt.setDouble(2, aluno.getCpf());
+            stmt.setString(2, aluno.getCpf());
             stmt.setDouble(3, aluno.getPeso());
             stmt.setDouble(4, aluno.getAltura());
             stmt.setString(5, aluno.getDataNascimento());
@@ -38,12 +37,16 @@ public class AlunoDAO {
 
     //Método para atualizar ou modificar os itens do banco de dados - Atualizar
     public void atualizar(Aluno aluno) {
-        String sql = "UPDATE Aluno SET nome = ? WHERE aluno_ID = ?";
+        String sql = "UPDATE Aluno SET nome = ?, cpf = ?, peso = ?, altura = ?, dataNascimento = ? WHERE aluno_ID = ?";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, aluno.getID_Aluno());
-            stmt.setString(2, aluno.getNome());
+            stmt.setString(1, aluno.getNome());
+            stmt.setString(2, aluno.getCpf());
+            stmt.setDouble(3, aluno.getPeso());
+            stmt.setDouble(4, aluno.getAltura());
+            stmt.setString(5, aluno.getDataNascimento());
+            stmt.setInt(6, aluno.getAluno_ID());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -51,12 +54,12 @@ public class AlunoDAO {
         }
     }
 
-    //Método para deletar um
+    //Método para deletar um aluno do banco de dados
     public void deletar(Aluno aluno){
         String sql = "DELETE FROM Aluno WHERE aluno_ID = ? OR nome = ?";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql);){
-            stmt.setInt(1, aluno.getID_Aluno());
+            stmt.setInt(1, aluno.getAluno_ID());
             stmt.setString(2, aluno.getNome());
             stmt.execute();
 
@@ -68,7 +71,7 @@ public class AlunoDAO {
 
     // Buscar aluno pelo ID
     public Aluno buscarPorID(int id) {
-        String sql = "SELECT * FROM Aluno WHERE ID_Aluno = ?";
+        String sql = "SELECT * FROM Aluno WHERE aluno_ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -115,9 +118,9 @@ public class AlunoDAO {
     // Método auxiliar para mapear o Aluno
     private Aluno mapearAluno(ResultSet rs) throws SQLException {
         Aluno aluno = new Aluno();
-        aluno.setID_Aluno(rs.getInt("ID_Aluno"));
+        aluno.setAluno_ID(rs.getInt("aluno_ID"));
         aluno.setNome(rs.getString("nome"));
-        aluno.setCpf(rs.getInt("cpf"));
+        aluno.setCpf(rs.getString("cpf"));
         aluno.setPeso(rs.getDouble("peso"));
         aluno.setAltura(rs.getDouble("altura"));
         aluno.setDataNascimento(rs.getString("dataNascimento"));
@@ -135,7 +138,7 @@ public class AlunoDAO {
 
             while (rs.next()) {
                 Aluno aluno = new Aluno();
-                aluno.setID_Aluno(rs.getInt("ID_Aluno"));
+                aluno.setAluno_ID(rs.getInt("aluno_ID"));
                 aluno.setNome(rs.getString("Nome"));
                 alunos.add(aluno);
             }

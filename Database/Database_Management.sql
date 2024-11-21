@@ -4,8 +4,8 @@ show databases;
 
 create table Aluno(
 	aluno_ID int primary key auto_increment,
-    nome varchar(30),
-    cpf double,
+    nome varchar(50),
+    cpf varchar(16),
     peso double,
     altura double,
     dataNascimento varchar(12)
@@ -16,4 +16,6 @@ create table Aluno(
 SELECT * FROM Aluno;
 
 DROP TABLE Aluno;
+
+TRUNCATE TABLE Aluno;
 

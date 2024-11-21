@@ -5,9 +5,9 @@ import org.exame.modelo.Aluno;
 
 public class Aluno {
     //Atributos
-    private int ID_Aluno;
+    private int aluno_ID;
     private static String nome;
-    private double cpf;
+    private String cpf;
     private double peso;
     private double altura;
     private String dataNascimento;
@@ -18,7 +18,7 @@ public class Aluno {
 
     }
 
-    public Aluno(String nome, double cpf, double peso, double altura) {
+    public Aluno(String nome, String cpf, double peso, double altura) {
         this.nome = nome;
         this.cpf = cpf;
         this.peso = peso;
@@ -27,12 +27,12 @@ public class Aluno {
 
     //Métodos get and set
     //ID
-    public int getID_Aluno() {
-        return ID_Aluno;
+    public int getAluno_ID() {
+        return aluno_ID;
     }
 
-    public void setID_Aluno(int ID_Aluno) {
-        this.ID_Aluno = ID_Aluno;
+    public void setAluno_ID(int aluno_ID) {
+        this.aluno_ID = aluno_ID;
     }
 
 
@@ -45,11 +45,11 @@ public class Aluno {
     }
 
     //CPF
-    public double getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(double cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
