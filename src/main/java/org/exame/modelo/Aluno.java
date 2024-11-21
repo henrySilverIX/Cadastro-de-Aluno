@@ -7,7 +7,7 @@ public class Aluno {
     //Atributos
     private int ID_Aluno;
     private static String nome;
-    private int cpf;
+    private double cpf;
     private double peso;
     private double altura;
     private String dataNascimento;
@@ -18,7 +18,7 @@ public class Aluno {
 
     }
 
-    public Aluno(String nome, int cpf, double peso, double altura) {
+    public Aluno(String nome, double cpf, double peso, double altura) {
         this.nome = nome;
         this.cpf = cpf;
         this.peso = peso;
@@ -45,11 +45,11 @@ public class Aluno {
     }
 
     //CPF
-    public int getCpf() {
+    public double getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(double cpf) {
         this.cpf = cpf;
     }
 

@@ -24,3 +24,16 @@ coloque a seguinte configuração: <br>
 **--module-path "caminho do javaFX no seu computador" --add-modules javafx.controls,javafx.fxml** <br>
 Após isso, é só clicar em **Apply** e sair dessa janela. <br>
 
+
+## Configuração para o MySQL Connector/J 9.1.0
+
+É possível que você passe por esse problema indicado no terminal:
+
+*Exception in thread "main" java.lang.RuntimeException: java.sql.SQLException: No suitable driver found for jdbc:mysql://localhost/secondExam* <br>
+
+Para resolver esse erro, é necessário configurar o MySQL Connector 9.1.0. Para fazer isso, primeiramente devemos
+fazer o download do MySQL Connector. Utilize o seguinte link: <a href="https://dev.mysql.com/downloads/connector/j/">MYSQL Connector</a>.
+Nesse site, selecione Platform Independent, e após isso, selecione Platform Independent (Architecture Independent), ZIP Archive e clique em download.
+Após o download, descompacte o arquivo zip e coloque a pasta em algum lugar do seu computador.
+A partir disso, navegue até encontrar o arquivo mysql-connector-j-9.1.0.jar.
+No IntelliJ, selecione File → Project Structure → Libraries. Clique no símbolo de + e adicione o caminho até o mysql-connector-j-9.1.0.jar.
