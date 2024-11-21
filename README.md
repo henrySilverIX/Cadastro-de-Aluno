@@ -14,6 +14,8 @@ https://jdk.java.net/javafx23/ <br>
 Após baixar o arquivo .zip, coloque a pasta em qualquer lugar que desejar em seu computador.
 No IntelliJ IDEA, siga o seguinte caminho: <br>
 Run → Edit Configurations... <br>
+Veja abaixo:
+![primeiraTela.png](Arquivos/img/primeiraTela.png)<br>
 Uma nova janela irá se abrir. Nessa janela, clique no símbolo de mais para adicionar uma nova configuração. Nessa
 opção, seleciona a primeira (Application).
 Nessa nova opção, dê um nome para essa nova configuração. Depois disso clique na opção:
