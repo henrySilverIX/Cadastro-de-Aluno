@@ -6,7 +6,7 @@ import org.exame.modelo.Aluno;
 public class Aluno {
     //Atributos
     private int aluno_ID;
-    private static String nome;
+    private String nome;
     private String cpf;
     private double peso;
     private double altura;
@@ -40,8 +40,8 @@ public class Aluno {
     public String getNome() {
         return nome;
     }
-    public void setNome(String nome) {
-        Aluno.nome = nome;
+    public void setNome(String Nome) {
+        this.nome = Nome;
     }
 
     //CPF

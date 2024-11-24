@@ -86,36 +86,54 @@ public class AlunoDAO {
 
     // Buscar alunos pelo nome
     public List<Aluno> buscarPorNome(String nome) {
-        String sql = "SELECT * FROM Aluno WHERE nome LIKE ?";
         List<Aluno> alunos = new ArrayList<>();
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, "%" + nome + "%");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                alunos.add(mapearAluno(rs));
+        try (Connection connection = ConnectionFactory.getConnection()) {
+            String sql = "SELECT * FROM Aluno WHERE nome LIKE ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, "%" + nome + "%"); // A busca deve ser insensível a maiúsculas e minúsculas
+                ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    Aluno aluno = new Aluno();
+                    aluno.setAluno_ID(resultSet.getInt("aluno_ID"));
+                    aluno.setNome(resultSet.getString("nome"));
+                    aluno.setCpf(resultSet.getString("cpf"));
+                    aluno.setPeso(resultSet.getDouble("peso"));
+                    aluno.setAltura(resultSet.getDouble("altura"));
+                    aluno.setDataNascimento(resultSet.getString("dataNascimento"));
+                    alunos.add(aluno);
+                }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return alunos;
     }
 
     // Listar todos os alunos
     public List<Aluno> listarTodos() {
-        String sql = "SELECT * FROM Aluno";
         List<Aluno> alunos = new ArrayList<>();
-        try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-            while (rs.next()) {
-                alunos.add(mapearAluno(rs));
+        String sql = "SELECT * FROM aluno"; // Ajuste o nome da tabela conforme necessário
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while(rs.next()){
+                Aluno aluno = new Aluno();
+                aluno.setAluno_ID(rs.getInt("aluno_ID"));
+                aluno.setNome(rs.getString("nome"));
+                aluno.setCpf(rs.getString("cpf"));
+                aluno.setPeso(rs.getDouble("peso"));
+                aluno.setAltura(rs.getDouble("altura"));
+                aluno.setDataNascimento(rs.getString("dataNascimento"));
+                alunos.add(aluno);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return alunos;
     }
 
-    // Método auxiliar para mapear o Aluno
+    // Metodo auxiliar para mapear o Aluno
     private Aluno mapearAluno(ResultSet rs) throws SQLException {
         Aluno aluno = new Aluno();
         aluno.setAluno_ID(rs.getInt("aluno_ID"));
@@ -139,7 +157,7 @@ public class AlunoDAO {
             while (rs.next()) {
                 Aluno aluno = new Aluno();
                 aluno.setAluno_ID(rs.getInt("aluno_ID"));
-                aluno.setNome(rs.getString("Nome"));
+                aluno.setNome(rs.getString("nome"));
                 alunos.add(aluno);
             }
         } catch (SQLException e) {

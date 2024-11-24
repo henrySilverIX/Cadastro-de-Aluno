@@ -1,5 +1,7 @@
 package org.exame.gui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import org.exame.dao.AlunoDAO;
@@ -33,13 +35,13 @@ public class DatabaseUI {
 
     //Campos de texto
     @FXML
-    private TextField alunoIDCampo, nomeCampo, CPFCampo, pesoCampo, alturaCampo, dataNascimentoCampo;
+    private TextField alunoIDCampo, nomeCampo, CPFCampo, pesoCampo, alturaCampo, dataNascimentoCampo, BuscarCampo;
 
 
 
     //Botões
     @FXML
-    private Button btnCadastrar, btnEditar, btnDeletar, btnBuscar, btnIMC, btnImprimir;
+    private Button btnCadastrar, btnEditar, btnDeletar, btnBuscar, btnIMC, btnImprimir, btnLimpar;
 
 
     //Elementos da tabela
@@ -80,6 +82,7 @@ public class DatabaseUI {
                 alunoDAO.cadastrar(novo_aluno);
                 showAlert("Sucesso", "Aluno cadastrado com sucesso!");
                 limparCampos();
+                atualizarTabela();
             }
         }catch(NumberFormatException e){
             showAlert("Erro", "Certifique-se de que CPF, Peso e Altura estão no formato correto!");
@@ -129,7 +132,7 @@ public class DatabaseUI {
 
 
 
-    //Método deletar
+    //Metodo deletar
     @FXML
     private void Deletar() {
         // Verificar se o campo de ID está preenchido
@@ -146,7 +149,7 @@ public class DatabaseUI {
             Aluno alunoParaDeletar = new Aluno();
             alunoParaDeletar.setAluno_ID(alunoID);
 
-            // Chamar o método de deletar
+            // Chamar o metodo de deletar
             alunoDAO.deletar(alunoParaDeletar);
 
             // Mostrar mensagem de sucesso
@@ -164,30 +167,44 @@ public class DatabaseUI {
 
 
 
-    //Método buscar
+    //Metodo buscar
     @FXML
     private void Buscar() {
-        String filtro = alunoIDCampo.getText().trim(); // Filtrar por ID ou nome
-        List<Aluno> alunos;
+        String filtro = BuscarCampo.getText().trim(); // Filtra por nome ou ID
 
         if (!filtro.isEmpty()) {
+            System.out.println("Filtro de busca: " + filtro); // Depuração para ver o filtro inserido
+            List<Aluno> alunos;
+
             try {
+                // Tenta buscar por ID
                 int id = Integer.parseInt(filtro);
-                Aluno aluno = alunoDAO.buscarPorID(id); // Implementar no DAO
+                Aluno aluno = alunoDAO.buscarPorID(id); // Método que busca por ID
+
                 if (aluno != null) {
-                    carregarTabela(List.of(aluno));
+                    carregarTabela(List.of(aluno)); // Se encontrou um aluno, carrega a tabela com ele
                 } else {
                     showAlert("Atenção", "Nenhum aluno encontrado com o ID especificado.");
                 }
+
             } catch (NumberFormatException e) {
-                alunos = alunoDAO.buscarPorNome(filtro); // Implementar no DAO
-                carregarTabela(alunos);
+                // Caso não consiga converter para ID, busca por nome
+                alunos = alunoDAO.buscarPorNome(filtro); // Buscar por nome
+
+                // Depuração para garantir que a lista de alunos não está duplicada
+                System.out.println("Alunos encontrados: " + alunos.size());
+                carregarTabela(alunos); // Carregar a tabela com os resultados
             }
         } else {
-            alunos = alunoDAO.listarTodos(); // Implementar no DAO
-            carregarTabela(alunos);
+            // Caso o campo de busca esteja vazio, mostra todos os alunos
+            List<Aluno> alunos = alunoDAO.listarTodos(); // Chama o método para listar todos os alunos
+            carregarTabela(alunos); // Carrega todos os alunos na tabela
         }
     }
+
+
+
+
 
 
     //Inicializar a tabela
@@ -219,17 +236,27 @@ public class DatabaseUI {
     }
 
     private void carregarTabela(List<Aluno> alunos) {
-        contentTable.getItems().clear();
-        contentTable.getItems().addAll(alunos);
+        // Cria uma ObservableList a partir da lista de alunos
+        ObservableList<Aluno> alunosObservable = FXCollections.observableArrayList(alunos);
+
+        // Vincula a ObservableList à TableView
+        contentTable.setItems(alunosObservable);
+        contentTable.getItems().clear(); // Limpa os itens anteriores
+        contentTable.getItems().addAll(alunos); // Adiciona os novos alunos
+        System.out.println("Tabela carregada com " + alunos.size() + " alunos");
+
     }
 
 
+    @FXML
     private void limparCampos() {
+        alunoIDCampo.clear();
         nomeCampo.clear();
         CPFCampo.clear();
         pesoCampo.clear();
         alturaCampo.clear();
         dataNascimentoCampo.clear();
+        BuscarCampo.clear();
     }
 
 
@@ -243,11 +270,9 @@ public class DatabaseUI {
 
 
 
-
-
     private void atualizarTabela() {
-        // Implemente este método para atualizar os dados da tabela contentTable
-        List<Aluno> alunos = alunoDAO.buscarTodos(); // Supondo que exista um método buscarTodos()
+        // Implemente este metodo para atualizar os dados da tabela contentTable
+        List<Aluno> alunos = alunoDAO.buscarTodos(); // Supondo que exista um metodo buscarTodos()
         contentTable.getItems().clear();
         contentTable.getItems().addAll(alunos);
     }

@@ -5,7 +5,7 @@ show databases;
 create table Aluno(
 	aluno_ID int primary key auto_increment,
     nome varchar(50),
-    cpf varchar(16),
+    cpf varchar(14),
     peso double,
     altura double,
     dataNascimento varchar(12)
